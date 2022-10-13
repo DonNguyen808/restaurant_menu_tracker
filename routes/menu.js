@@ -3,6 +3,11 @@ const router = express.Router()
 
 // const { ensureAuth, ensureGuest } = require('../middleware/auth')
 
-router.get('/', indexController.getHome)
+router.get('/', menuController.getIndex)
+// colon tells that this parameter will vary
+router.get('/:id', menuController.geteditMenu)
+router.get('/delete/:id', menuController.getdeleteMenu)
+router.post('/save', menuController.saveMenu)
+router.post('/new', menuController.newMenu)
 
 module.exports = router
