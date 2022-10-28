@@ -11,5 +11,32 @@ model.exports = {
             res.render('index', {title: 'Menu Tracker', data: menuData, search: '', loggedIn: sesh.loggedIn})
         }
     },
-    getSearch:
+
+    // query
+    getSearch: async(req, res) => {
+        let menu = schemas.menu
+        let sesh = req.session
+        let q = req.body.searchInput
+        let menuData = null
+        // finds all with that name?
+        let qry = {name:{$regex: '^' + q, $options: 'i'}}
+
+        if (q != null) {
+            // goes into the db and finds it
+            let menuResult = await menu.find(qry)
+            .then((data) => {
+                menuData = data
+            }
+            )
+        } else {
+            q = 'Search'
+            let menuResults = await menu.find({})
+            .then((data) => {
+                menuData = data
+            })
+
+        }
+        res.render('index', {title: 'Menu Tracker', data: menuData, search: q, loggedIn: sesh.loggedIn})
+
+    }
 }
